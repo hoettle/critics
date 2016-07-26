@@ -14,7 +14,7 @@ language = get_language()
 _ = language.ugettext
 
 
-def post2slack(reviews, slack_url, channel):
+def post2slack(app_id, reviews, slack_url, channel):
     emoji = {
         1: ':feelsgood:',
         2: ':finnadie:',
@@ -50,9 +50,9 @@ def post2slack(reviews, slack_url, channel):
     platform = reviews[0].platform
 
     store = _('AppStore') if platform == 'ios' else _('Google Play')
-    template = language.ungettext('There is %(num)d new review in %(store)s',
-                                  'There are %(num)d new reviews in %(store)s', len(reviews))
-    text = template % {'num': len(reviews), 'store': store}
+    template = language.ungettext('There is %(num)d new review in %(store)s for %(appid)s',
+                                  'There are %(num)d new reviews in %(store)s for %(appid)s', len(reviews))
+    text = template % {'num': len(reviews), 'store': store, 'appid': app_id}
 
     payload = {
         'attachments': [{
